@@ -25,8 +25,9 @@ public class Camera : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
+		/*
 		// OLD CODE TO CHANGE CAMERA POSITION - Too stiff
-		/*Vector3 position;
+		Vector3 position;
 
 		position = player.transform.position;
 
@@ -64,7 +65,8 @@ public class Camera : MonoBehaviour {
 		
 		// Lerp the camera's position between it's current position and it's new position.
 		transform.position = Vector3.Lerp(transform.position, newPos, smooth * Time.deltaTime);
-		
+
+
 		// Make sure the camera is looking at the player.
 		//SmoothLookAt();
 
