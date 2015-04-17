@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class Message : MonoBehaviour {
 
 	public static List<string> Messages = new List<string> {
-		"'The one who never knew how to choose correctly.'\nYou must escape this maze.\n\nHow will you escape it?",
-		"He had three children. Two flats, one round.\nWhy he didn't noticed the special needs of the round one?",
-		"So many regrets, that he's still trying to find a way to change it all.\nBut he simply can't. And while he didn't notice that, he continously made mistakes.",
+		"'The one who never knew how to choose correctly.'\nYou must escape this maze.\n\nHow will you escape it? The letters shall guide your path.",
+		"He had three children. Two flats, one round.\nWhy he didn't notice the special needs of the round one?",
+		"So many regrets, that he's still trying to find a way to change it all.\nBut he simply can't. And while he didn't notice that, he just kept on making mistakes.",
 		"He found the love of his life at the age of 22. She was perfectly round.\n\nThat shapes.",
 		"The first one was the proud of the father. PhD in Physics, from Flatland University.\nSince he was a little square, he was good with numbers.",
 		"After 30 years together, she died. Or, at least, disappeared.\n\nHe was never the same.",
