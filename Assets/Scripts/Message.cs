@@ -20,19 +20,24 @@ public class Message : MonoBehaviour {
 		"Teste 9",
 		"Teste 10",
 		"Teste 11",
-		"Teste 12"};
+		"Teste 12",
+		"Teste 13",
+		"Teste 14",
+		"Teste 15",
+		"Teste 16"};
 	public static string tip = "Press E to read the message.";
 	public static bool know = false;	
 
 	private float initTime, endTime;
 
-	private bool time;
-	
+	private bool time, started;
+
 	private Color alpha;
 	// Use this for initialization
 	void Start () {
 		time = false;
 		alpha = Color.white;
+		started = false;
 	}
 	
 	// Update is called once per frame
@@ -51,14 +56,20 @@ public class Message : MonoBehaviour {
 						if (guiText.material.color.a < 0) {
 							guiText.text = "";
 							time = false;
+							if (started)
+								Player.knowing = true;
 						}
 					}
 				}
 			}
 			else
+			{
 				alpha.a = 1.0f;
-			Debug.Log (alpha.a);
-			Debug.Log (endTime - 0.05f * guiText.text.Length + " - " + initTime);
+				if (Player.started && !started) {
+					guiText.text = "Suddenly, everything made sense.";
+					started = true;
+				}
+			}
 			guiText.material.color = alpha;
 			//Debug.Log (endTime - initTime);
 		}

@@ -5,13 +5,13 @@ public class Camera : MonoBehaviour {
 
 	private GameObject mainCamera;
 
-	public float smooth = 1.5f;         // The relative speed at which the camera will catch up.
+	public float smooth = 1.5f, smoothPerspective = 0.8f;         // The relative speed at which the camera will catch up.
 
 	private Transform player;           // Reference to the player's transform.
 	private Vector3 relCameraPos;       // The relative position of the camera from the player.
 	private float relCameraPosMag;      // The distance of the camera from the player.
 	private Vector3 newPos;             // The position the camera is trying to reach.
-	
+	private bool change;
 
 	// Use this for initialization
 	void Start () {
@@ -70,6 +70,9 @@ public class Camera : MonoBehaviour {
 		// Make sure the camera is looking at the player.
 		//SmoothLookAt();
 
+		if (Player.knowing)
+			ChangePerspective();
+
 	}
 
 	bool ViewingPosCheck (Vector3 checkPos)
@@ -104,14 +107,9 @@ public class Camera : MonoBehaviour {
 	private void ChangePerspective() {
 		camera.orthographic = false;
 		
-		camera.transform.position = new Vector3(player.position.x- 5.0f, player.position.y, player.position.z);
+		camera.transform.position = Vector3.Lerp (transform.position, new Vector3(player.position.x - 30.0f, player.position.y, player.position.z),  smoothPerspective * Time.deltaTime);
 
-		//SmoothLookAt();
-
-		camera.transform.Rotate(new Vector3(0.0f, 90.0f, 270.0f));
-		//for (int i = 0; i < 360; i++) {
-		//	camera.transform.rotation = Quaternion.Lerp (
-		//}
+		camera.transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler(new Vector3(0.0f, 70.0f, 270.0f)), smoothPerspective * Time.deltaTime);
 
 	}
 }
