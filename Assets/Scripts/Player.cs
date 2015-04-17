@@ -150,8 +150,10 @@ public class Player : MonoBehaviour {
 						int index = UnityEngine.Random.Range(1,Message.Messages.Count);
 						gui.guiText.text = Message.Messages[index];
 						Message.Messages.RemoveAt (index);
-						if (Message.Messages.Count == 1)
+						if (Message.Messages.Count == 15) {
 							started = true;
+						}
+						Debug.Log (Message.Messages.Count);
 					}
 					Destroy (gameObject.gameObject);
 				}
