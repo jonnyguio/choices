@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
 		rb;
 
 	private GameObject
-		gui;
+		gui, letter;
 
 	private Message
 		message;
@@ -35,7 +35,8 @@ public class Player : MonoBehaviour {
 		canMoveRight = true, 
 		canMoveUp = true,
 		canMoveDown = true,
-		destroyIt = false;
+		destroyIt = false,
+		read = false;
 
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
@@ -72,6 +73,23 @@ public class Player : MonoBehaviour {
 		}
 		if (colliding)
 			colliding = !colliding;
+
+		if (Input.GetKeyDown (KeyCode.E) && read) {
+			if (!Message.know) {
+				gui.guiText.text = Message.Messages[0];
+				Message.know = true;
+			}
+			else {
+				int index = (Message.Messages.Count > 3) ? UnityEngine.Random.Range(1,Message.Messages.Count-2) : 1;
+				gui.guiText.text = Message.Messages[index];
+				Message.Messages.RemoveAt (index);
+				if (Message.Messages.Count == 1) {
+					started = true;
+				}
+			}
+			Destroy (letter);
+			read = false;
+		}
 	}
 	void OnTriggerEnter2D(Collider2D gameObject) {
 		if (!Player.knowing) {
@@ -107,10 +125,11 @@ public class Player : MonoBehaviour {
 					canMoveDown = false;
 			}
 
-			if (gameObject.tag == "Letter" && !Message.know) {
-
-				gui.guiText.text = Message.tip;
-
+			if (gameObject.tag == "Letter") {
+				if (!Message.know)
+					gui.guiText.text = Message.tip;
+				letter = gameObject.gameObject;
+				read = true;
 			}
 		}
 	}
@@ -137,26 +156,6 @@ public class Player : MonoBehaviour {
 					canMoveUp = false;
 				if ((min == dyMin || min == dyMax) && (y <= 0)) 
 					canMoveDown = false;*/	
-			}
-			if (gameObject.tag == "Letter") {
-				
-				Debug.Log (Input.GetKeyDown(KeyCode.E));
-				if (Input.GetKeyDown (KeyCode.E)) {
-					if (!Message.know) {
-						gui.guiText.text = Message.Messages[0];
-						Message.know = true;
-					}
-					else {
-						int index = (Message.Messages.Count > 3) ? UnityEngine.Random.Range(1,Message.Messages.Count-2) : 1;
-						gui.guiText.text = Message.Messages[index];
-						Message.Messages.RemoveAt (index);
-						if (Message.Messages.Count == 1) {
-							started = true;
-						}
-						Debug.Log (Message.Messages.Count);
-					}
-					Destroy (gameObject.gameObject);
-				}
 			}
 		}
 	}
