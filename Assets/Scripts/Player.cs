@@ -46,11 +46,13 @@ public class Player : MonoBehaviour {
 	}
 	
 	void Update() {
+
 		moving = false;
 		x = Input.GetAxis ("Horizontal");
 		y = Input.GetAxis ("Vertical");
 		velx = rb.velocity.x;
 		vely = rb.velocity.y;
+	
 		if (x >= 0 && canMoveRight) {
 			//rb.AddForce(new Vector2((rb.velocity.x < 0.0f)?-baseForce:-baseForce*2, 0.0f));
 			rb.velocity = (Player.knowing) ? new Vector2(rb.velocity.x, baseSpeed * -x) : new Vector2(baseSpeed * x, rb.velocity.y);
@@ -71,8 +73,6 @@ public class Player : MonoBehaviour {
 			rb.velocity =  (Player.knowing) ? new Vector2(baseSpeed * y, rb.velocity.y) : new Vector2(rb.velocity.x, baseSpeed * y);
 			moving = true;
 		}
-		if (colliding)
-			colliding = !colliding;
 
 		if (Input.GetKeyDown (KeyCode.E) && read) {
 			if (!Message.know) {
@@ -90,38 +90,49 @@ public class Player : MonoBehaviour {
 			Destroy (letter);
 			read = false;
 		}
+
+		if (!colliding) 
+		{
+			canMoveUp = true;
+			canMoveDown = true;
+			canMoveLeft = true;
+			canMoveRight = true;
+		}
 	}
+
 	void OnTriggerEnter2D(Collider2D gameObject) {
+
 		if (!Player.knowing) {
-			if (!colliding && gameObject.tag == "Wall") {
+			if (gameObject.tag == "Wall") {
 
 				colliding = true;
 				Bounds pPosition, oPosition;
-				float dxMin, dyMin, dxMax, dyMax, min;
+				float dxLeft, dyDown, dxRight, dyUp, min;
 
 				pPosition = rb.collider2D.bounds;
 				oPosition = gameObject.collider2D.bounds;
-				dxMin = Math.Abs((Math.Abs(pPosition.center.x) - Math.Abs(pPosition.extents.x)) - (Math.Abs(oPosition.center.x) + Math.Abs(oPosition.extents.x)));
-				dxMax = Math.Abs((Math.Abs(pPosition.center.x) + Math.Abs(pPosition.extents.x)) - (Math.Abs(oPosition.center.x) - Math.Abs(oPosition.extents.x)));
-				dyMin = Math.Abs((Math.Abs(pPosition.center.y) - Math.Abs(pPosition.extents.y)) - (Math.Abs(oPosition.center.y) + Math.Abs(oPosition.extents.y)));
-				dyMax = Math.Abs((Math.Abs(pPosition.center.y) + Math.Abs(pPosition.extents.y)) - (Math.Abs(oPosition.center.y) - Math.Abs(oPosition.extents.y)));
 
-				min = Math.Min (dxMin, Math.Min (dxMax, Math.Min (dyMin, dyMax)));
-				if (min == dxMin || min == dxMax)
+				dxLeft = Math.Abs((pPosition.center.x - pPosition.extents.x) - (oPosition.center.x + oPosition.extents.x));
+				dxRight = Math.Abs((pPosition.center.x + pPosition.extents.x) - (oPosition.center.x - oPosition.extents.x));
+				dyDown = Math.Abs((pPosition.center.y - pPosition.extents.y) - (oPosition.center.y + oPosition.extents.y));
+				dyUp = Math.Abs((pPosition.center.y + pPosition.extents.y) - (oPosition.center.y - oPosition.extents.y));
+
+				min = Math.Min (dxLeft, Math.Min (dxRight, Math.Min (dyDown, dyUp)));
+				if (min == dxLeft || min == dxRight)
 				{
 					rb.velocity = new Vector2(0.0f, rb.velocity.y);
 				}
-				if (min == dyMin || min == dyMax)
+				if (min == dyDown || min == dyUp)
 				{
 					rb.velocity = new Vector2(rb.velocity.x, 0.0f);
 				}
-				if ((min == dxMin || min == dxMax) && (x >= 0)) 
+				if ((min == dxRight) && (x > 0)) 
 					canMoveRight = false;
-				if ((min == dxMin || min == dxMax) && (x <= 0)) 
+				if ((min == dxLeft) && (x < 0)) 
 					canMoveLeft = false;
-				if ((min == dyMin || min == dyMax) && (y >= 0)) 
+				if ((min == dyUp) && (y > 0)) 
 					canMoveUp = false;
-				if ((min == dyMin || min == dyMax) && (y <= 0)) 
+				if ((min == dyDown) && (y < 0)) 
 					canMoveDown = false;
 			}
 
@@ -135,27 +146,48 @@ public class Player : MonoBehaviour {
 	}
 
 	void OnTriggerStay2D(Collider2D gameObject){
+		colliding = true;
 		if (!Player.knowing) {
 			if (gameObject.tag == "Wall") {
 				Bounds pPosition, oPosition;
-				float dxMin, dyMin, dxMax, dyMax, min;
-				
+				float dxLeft, dyDown, dxRight, dyUp, min;
+
 				pPosition = rb.collider2D.bounds;
 				oPosition = gameObject.collider2D.bounds;
-				dxMin = Math.Abs((Math.Abs(pPosition.center.x) - Math.Abs(pPosition.extents.x)) - (Math.Abs(oPosition.center.x) + Math.Abs(oPosition.extents.x)));
-				dxMax = Math.Abs((Math.Abs(pPosition.center.x) + Math.Abs(pPosition.extents.x)) - (Math.Abs(oPosition.center.x) - Math.Abs(oPosition.extents.x)));
-				dyMin = Math.Abs((Math.Abs(pPosition.center.y) - Math.Abs(pPosition.extents.y)) - (Math.Abs(oPosition.center.y) + Math.Abs(oPosition.extents.y)));
-				dyMax = Math.Abs((Math.Abs(pPosition.center.y) + Math.Abs(pPosition.extents.y)) - (Math.Abs(oPosition.center.y) - Math.Abs(oPosition.extents.y)));
-				
-				min = Math.Min (dxMin, Math.Min (dxMax, Math.Min (dyMin, dyMax)));
-				/*if ((min == dxMin || min == dxMax) && (x >= 0)) 
+				dxLeft = Math.Abs((pPosition.center.x - pPosition.extents.x ) - (oPosition.center.x + oPosition.extents.x));
+				dxRight = Math.Abs((pPosition.center.x + pPosition.extents.x ) - (oPosition.center.x - oPosition.extents.x));
+				dyDown = Math.Abs((pPosition.center.y - pPosition.extents.y ) - (oPosition.center.y + oPosition.extents.y));
+				dyUp = Math.Abs((pPosition.center.y + pPosition.extents.y ) - (oPosition.center.y - oPosition.extents.y));
+
+				min = Math.Min (dxLeft, Math.Min (dxRight, Math.Min (dyDown, dyUp)));
+				if (min == dxLeft || min == dxRight)
+				{
+					rb.velocity = new Vector2(0.0f, rb.velocity.y);
+				}
+				if (min == dyDown || min == dyUp)
+				{
+					rb.velocity = new Vector2(rb.velocity.x, 0.0f);
+				}
+				if ((min == dxRight) && (x > 0)) 
+				{
 					canMoveRight = false;
-				if ((min == dxMin || min == dxMax) && (x <= 0)) 
+					return;
+				}
+				if ((min == dxLeft) && (x < 0)) 
+				{
 					canMoveLeft = false;
-				if ((min == dyMin || min == dyMax) && (y >= 0)) 
+					return;
+				}
+				if ((min == dyUp) && (y > 0))
+				{
 					canMoveUp = false;
-				if ((min == dyMin || min == dyMax) && (y <= 0)) 
-					canMoveDown = false;*/	
+					return;
+				}
+				if ((min == dyDown) && (y < 0)) 
+				{
+					canMoveDown = false;
+					return;
+				}
 			}
 		}
 	}
@@ -176,6 +208,7 @@ public class Player : MonoBehaviour {
 				if (!Message.know)
 					gui.guiText.text = "";
 			}
+			colliding = !colliding;
 		}
 	} 
 
