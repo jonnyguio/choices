@@ -147,10 +147,10 @@ public class Player : MonoBehaviour {
 						Message.know = true;
 					}
 					else {
-						int index = UnityEngine.Random.Range(1,Message.Messages.Count);
+						int index = (Message.Messages.Count > 3) ? UnityEngine.Random.Range(1,Message.Messages.Count-2) : 1;
 						gui.guiText.text = Message.Messages[index];
 						Message.Messages.RemoveAt (index);
-						if (Message.Messages.Count == 15) {
+						if (Message.Messages.Count == 1) {
 							started = true;
 						}
 						Debug.Log (Message.Messages.Count);

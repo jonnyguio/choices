@@ -5,22 +5,22 @@ using System.Collections.Generic;
 public class Message : MonoBehaviour {
 
 	public static List<string> Messages = new List<string> {
-		"'The one who never knew how to chose correctly.\n But, why?",
-		"He had three children. Two flats, one round.\n Why he didn't noticed the special needs of the round one?",
-		"So many regrets, that he's still trying to find a way to change it all.\n But he simply can't. And while he didn't notice that, he continously made mistakes.",
-		"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-		"Teste 4",
-		"Teste 5",
-		"Teste 6",
-		"Teste 7",
-		"Teste 8",
-		"Teste 9",
-		"Teste 10",
-		"Teste 11",
-		"Teste 12",
-		"Teste 13",
-		"Teste 14",
-		"Teste 15"};
+		"'The one who never knew how to choose correctly.'\nYou must escape this maze.\n\nHow will you escape it?",
+		"He had three children. Two flats, one round.\nWhy he didn't noticed the special needs of the round one?",
+		"So many regrets, that he's still trying to find a way to change it all.\nBut he simply can't. And while he didn't notice that, he continously made mistakes.",
+		"He found the love of his life at the age of 22. She was perfectly round.\n\nThat shapes.",
+		"The first one was the proud of the father. PhD in Physics, from Flatland University.\nSince he was a little square, he was good with numbers.",
+		"After 30 years together, she died. Or, at least, disappeared.\n\nHe was never the same.",
+		"'Why, why, why? Why i'm trapped here? What's is this all about?'",
+		"'I can't remember how i ended up in this place?'\nThese first questions are the most dangerous ones.",
+		"Running around in circles, he started to think too much about his life.\n\nDangerous zone.",
+		"'DAD, I WANT A CAR!'\n'Sure son, you deserve it!'\nThe other two kids just stared from behind their bedrooms' doors.",
+		"Always watches. No eyes.",
+		"How could have I trusted Kevin?",
+		"'It's just a resistance test. I can do it.'",
+		"'Son, just follow your dreams. Pierce the heavens.'",
+		"'Honey, I'm home.'",
+		"Exhausted, he needed to find a way. He needed to escape of this endless hell.\nWhat was that he wasn't seeing?"};
 	public static string tip = "Press E to read the message.";
 	public static bool know = false;	
 
@@ -73,7 +73,7 @@ public class Message : MonoBehaviour {
 			guiText.material.color = alpha;
 			if (Player.knowing) {
 				endGame = Time.time;
-				guiText.text = "He was never able to choose.";
+				guiText.text = "He was never able to choose.\n\nNeither escape.";
 				alpha.a -= 0.1f * (endTime - 0.05f * guiText.text.Length) - initTime * 0.01f;
 				Debug.Log (endGame - initTime);
 				if (endGame - initTime > 20.0f && !ending) {
